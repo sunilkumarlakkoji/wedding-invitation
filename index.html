@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sunil & Radha | Wedding Invitation</title>
+
+  <!-- Open Graph & WhatsApp Preview Metadata -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Sunil & Radha - You're Invited! ❤️" />
+  <meta property="og:description" content="Join us to celebrate our wedding on 29 October 2026 in Hyderabad." />
+  <meta property="og:image" content="./Couple%20portrait.jpg" />
+  <meta property="og:url" content="https://sunilkumarlakkoji.github.io/wedding-invitation/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Mandali&family=Suranna&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & THEME CONFIGURATION
+       ========================================================================== */
+    :root {
+      --bg-cream: #FAF7F2;
+      --bg-card: #FFFFFF;
+      --gold-primary: #C59B27;
+      --gold-dark: #9A7B1C;
+      --gold-light: #F4E8C1;
+      --rose-accent: #8E3A49;
+      --rose-light: #FDF2F4;
+      --text-main: #2C2523;
+      --text-muted: #6E6259;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-script: 'Great Vibes', cursive;
+      --font-sans: 'Montserrat', sans-serif;
+      --font-telugu: 'Mandali', 'Suranna', 'Montserrat', sans-serif;
+      --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 12px 35px rgba(142, 58, 73, 0.12);
+      --radius: 18px;
+    }
+
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Floating Petals Canvas */
+    #petalCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* Top Floating Controls */
+    .top-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 12px;
+      z-index: 1000;
+    }
+
+    .ctrl-btn {
+      height: 44px;
+      padding: 0 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(197, 155, 39, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--rose-accent);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-smooth);
+    }
+
+    .ctrl-btn.circular {
+      width: 44px;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .ctrl-btn.active {
+      background: var(--rose-accent);
+      color: #fff;
+    }
+
+    /* Equalizer Waveform */
+    .equalizer {
+      display: flex;
+      align-items: flex-end;
+      height: 14px;
+      gap: 2.5px;
+    }
+
+    .eq-bar {
+      width: 3px;
+      background-color: currentColor;
+      border-radius: 2px;
+      height: 4px;
+      transition: height 0.2s ease;
+    }
+
+    .ctrl-btn.active .eq-bar:nth-child(1) { animation: soundWave 0.7s infinite alternate ease-in-out; }
+    .ctrl-btn.active .eq-bar:nth-child(2) { animation: soundWave 0.5s infinite 0.2s alternate ease-in-out; }
+    .ctrl-btn.active .eq-bar:nth-child(3) { animation: soundWave 0.6s infinite 0.4s alternate ease-in-out; }
+
+    @keyframes soundWave {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    /* ==========================================================================
+       SECTION 1: OPENING HERO OVERLAY
+       ========================================================================== */
+    #coverSection {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #FFFDF9 0%, #F5EDE0 100%);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+    }
+
+    #coverSection.unlocked {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .cover-card {
+      background: rgba(255, 255, 255, 0.92);
+      padding: 40px 24px;
+      border-radius: 24px;
+      border: 1px solid var(--gold-light);
+      box-shadow: var(--shadow-lg);
+      max-width: 460px;
+      width: 100%;
+      position: relative;
+    }
+
+    .cover-card::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed var(--gold-primary);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+
+    /* Couple Avatar on Hero Opening */
+    .hero-couple-avatar {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      margin: 0 auto 16px auto;
+      padding: 4px;
+      background: linear-gradient(135deg, var(--gold-primary), var(--rose-accent));
+      box-shadow: 0 8px 25px rgba(142, 58, 73, 0.25);
+      position: relative;
+    }
+
+    .hero-couple-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 50%;
+      filter: contrast(1.06) saturate(1.1);
+    }
+
+    .subtitle-badge {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .cover-names {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--rose-accent);
+      line-height: 1.15;
+      margin: 10px 0;
+    }
+
+    .cover-names .amp {
+      display: block;
+      font-family: var(--font-script);
+      font-size: 2.1rem;
+      color: var(--gold-primary);
+      margin: 2px 0;
+    }
+
+    .open-btn {
+      margin-top: 24px;
+      padding: 13px 32px;
+      background: linear-gradient(135deg, var(--rose-accent), #68232f);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(142, 58, 73, 0.35);
+      transition: var(--transition-smooth);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .open-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* ==========================================================================
+       MAIN INVITATION WRAPPER
+       ========================================================================== */
+    .site-wrapper {
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 0 16px 100px 16px;
+      position: relative;
+    }
+
+    section {
+      padding: 60px 0 20px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      color: var(--rose-accent);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      width: 40px;
+      height: 1px;
+      background: var(--gold-primary);
+    }
+
+    .section-divider i {
+      color: var(--gold-primary);
+      font-size: 0.8rem;
+    }
+
+    .welcome-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 35px 24px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(197, 155, 39, 0.15);
+    }
+
+    .journey-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--gold-dark);
+      margin-bottom: 16px;
+    }
+
+    /* Countdown */
+    .countdown-container {
+      background: linear-gradient(135deg, var(--rose-accent), #5a1924);
+      border-radius: var(--radius);
+      padding: 30px 20px;
+      color: #fff;
+      box-shadow: var(--shadow-lg);
+      margin: 25px 0;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .count-box {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(4px);
+      padding: 12px 6px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .count-val {
+      font-size: 1.8rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .count-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    /* Events */
+    .events-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .event-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 26px 20px;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--gold-primary);
+      text-align: left;
+      transition: var(--transition-smooth);
+    }
+
+    .event-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+    }
+
+    .event-icon-box {
+      width: 46px;
+      height: 46px;
+      background: var(--rose-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rose-accent);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .event-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      color: var(--rose-accent);
+      font-weight: 700;
+    }
+
+    .event-details {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 12px 0 18px 0;
+      line-height: 1.6;
+    }
+
+    .event-details div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .event-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-cal, .btn-dir {
+      flex: 1;
+      min-width: 130px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-cal {
+      background: var(--rose-light);
+      color: var(--rose-accent);
+      border: 1px solid rgba(142, 58, 73, 0.2);
+    }
+
+    .btn-dir {
+      background: #F4F6F8;
+      color: #333;
+      border: 1px solid #E0E0E0;
+    }
+
+    /* Venue */
+    .venue-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(197, 155, 39, 0.2);
+    }
+
+    .venue-map-embed {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      border: 0;
+      margin: 18px 0;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--rose-accent);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(142, 58, 73, 0.25);
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       SECTION 7: PHOTO GALLERY
+       ========================================================================== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      cursor: pointer;
+      background: #fff;
+      padding: 6px;
+      border: 1px solid var(--gold-light);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      transition: var(--transition-smooth);
+    }
+
+    .gallery-item.featured-wide {
+      grid-column: span 2;
+      aspect-ratio: 16 / 10;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 10px;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      filter: contrast(1.05) saturate(1.12);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+    }
+
+    .photo-caption {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(6px);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--rose-accent);
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid rgba(197, 155, 39, 0.3);
+    }
+
+    /* Lightbox Modal */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #lightbox.active {
+      display: flex;
+    }
+
+    #lightboxImg {
+      max-width: 92%;
+      max-height: 82vh;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    /* Blessings & Shloka */
+    .shloka-card {
+      background: #FFFDF9;
+      border: 2px solid var(--gold-light);
+      border-radius: var(--radius);
+      padding: 34px 20px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .shloka-card::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed rgba(197, 155, 39, 0.4);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    .shloka-telugu {
+      font-family: var(--font-telugu);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--rose-accent);
+      line-height: 2.1;
+      letter-spacing: 0.5px;
+      margin: 15px 0;
+    }
+
+    .shloka-meaning {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 24px auto;
+    }
+
+    .wishes-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #25D366;
+      color: #FFFFFF;
+      padding: 14px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+      transition: var(--transition-smooth);
+    }
+
+    .compliments-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      box-shadow: var(--shadow-sm);
+      margin-top: 20px;
+      border: 1px solid rgba(197, 155, 39, 0.15);
+    }
+
+    .contact-card {
+      background: var(--rose-light);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      box-shadow: var(--shadow-sm);
+      margin-top: 18px;
+      border: 1px dashed rgba(142, 58, 73, 0.3);
+    }
+
+    .contact-pill-stack {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .contact-pill {
+      background: #fff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      color: var(--rose-accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Bottom Scrollspy Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-radius: 30px;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(197, 155, 39, 0.3);
+      z-index: 900;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.65rem;
+      font-weight: 500;
+      gap: 3px;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-item i {
+      font-size: 1.1rem;
+    }
+
+    .nav-item.active {
+      color: var(--rose-accent);
+      font-weight: 600;
+      transform: scale(1.08);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Petals Background Animation -->
+  <canvas id="petalCanvas"></canvas>
+
+  <!-- Top Controls with Audio Equalizer -->
+  <div class="top-controls">
+    <button class="ctrl-btn" id="audioToggle" aria-label="Toggle background music">
+      <div class="equalizer">
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+      </div>
+      <span style="font-size: 0.75rem; font-weight: 600;">Music</span>
+    </button>
+    <button class="ctrl-btn circular" id="quickShareBtn" aria-label="Share invitation link">
+      <i class="fa-solid fa-share-nodes"></i>
+    </button>
+  </div>
+
+  <!-- Background Instrumental Audio -->
+  <audio id="bgAudio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=indian-instrumental-122938.mp3" type="audio/mp3" />
+  </audio>
+
+  <!-- ==========================================================================
+       SECTION 1: OPENING HERO OVERLAY
+       ========================================================================== -->
+  <div id="coverSection">
+    <div class="cover-card">
+      <div class="hero-couple-avatar">
+        <img src="./Couple%20portrait.jpg" alt="Sunil and Radha" />
+      </div>
+      <span class="subtitle-badge">Together with their families</span>
+      <h1 class="cover-names" id="coverNamesDisplay">
+        Sunil Kumar
+        <span class="amp">&</span>
+        Radha Kumari
+      </h1>
+      <p style="font-family: var(--font-serif); font-size: 1.12rem; color: var(--text-muted); margin-top: 6px;">
+        invite you to celebrate the beginning of their forever
+      </p>
+      <button class="open-btn" id="openInviteBtn">
+        <span>Open Invitation</span> ❤️
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MAIN INVITATION CONTENT
+       ========================================================================== -->
+  <main class="site-wrapper">
+
+    <!-- Hero Header -->
+    <section id="home" style="padding-top: 40px;">
+      <span class="subtitle-badge">Wedding Invitation</span>
+      <h2 class="section-title" id="mainCoupleHeader">Sunil & Radha</h2>
+      <div class="section-divider"><i class="fa-solid fa-om"></i></div>
+      <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 400px; margin: 0 auto;">
+        Thursday, 29 October 2026 • Pagidi Pratap Reddy Gardens, Hyderabad[cite: 1, 2, 3]
+      </p>
+    </section>
+
+    <!-- Real-time Countdown Timer -->
+    <div class="countdown-container">
+      <p style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;">Counting Down to the Big Day</p>
+      <div class="countdown-grid" id="countdownGrid">
+        <div class="count-box"><div class="count-val" id="days">00</div><div class="count-label">Days</div></div>
+        <div class="count-box"><div class="count-val" id="hours">00</div><div class="count-label">Hours</div></div>
+        <div class="count-box"><div class="count-val" id="minutes">00</div><div class="count-label">Mins</div></div>
+        <div class="count-box"><div class="count-val" id="seconds">00</div><div class="count-label">Secs</div></div>
+      </div>
+      <div id="celebrationNotice" style="display: none; font-size: 1.2rem; font-family: var(--font-serif); margin-top: 10px;">
+        🎉 The Wedding Celebrations have begun! 🎉
+      </div>
+    </div>
+
+    <!-- Welcome Message -->
+    <section>
+      <div class="welcome-card">
+        <div class="journey-quote">"Two hearts, one beautiful journey..."</div>
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 12px;">
+          With the blessings of our parents and loved ones, we, <strong>Sunil & Radha</strong>, invite you to celebrate the beginning of our forever.[cite: 1, 2, 3]
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.92rem;">
+          Your presence and blessings will make our special day even more memorable.[cite: 1, 2, 3]
+        </p>
+      </div>
+    </section>
+
+    <!-- Our Story -->
+    <section id="story">
+      <h3 class="section-title">Our Story</h3>
+      <div class="section-divider"><i class="fa-solid fa-heart"></i></div>
+      <div class="welcome-card">
+        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7;">
+          "From a chance meeting to countless memories, our journey has been nothing short of magical. Now, we're ready to write our greatest chapter together."[cite: 1, 2, 3]
+        </p>
+      </div>
+    </section>
+
+    <!-- Functions / Timeline -->
+    <section id="functions">
+      <h3 class="section-title">Wedding Functions</h3>
+      <div class="section-divider"><i class="fa-solid fa-calendar-days"></i></div>
+      <div class="events-stack" id="eventsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Venue & Location -->
+    <section id="venue">
+      <h3 class="section-title">The Venue</h3>
+      <div class="section-divider"><i class="fa-solid fa-location-dot"></i></div>
+      <div class="venue-card">
+        <h4 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--rose-accent);" id="venueNameDisplay">Pagidi Pratap Reddy Gardens</h4>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin: 6px 0 16px;" id="venueAddressDisplay">
+          Gajularamaram, Hyderabad, Telangana 500117[cite: 1, 2, 3]
+        </p>
+        <iframe
+          class="venue-map-embed"
+          id="venueMapIframe"
+          src="https://maps.google.com/maps?q=Pagidi%20Pratap%20Reddy%20Gardens%20Gajularamaram%20Hyderabad&t=&z=14&ie=UTF8&iwloc=&output=embed"
+          loading="lazy">
+        </iframe>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <a id="openMapsBtn" href="https://maps.app.goo.gl/aUjYtjovLFgNCZbc7" target="_blank" class="btn-primary">
+            <i class="fa-solid fa-diamond-turn-right"></i> Get Directions
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Moments & Memories Gallery -->
+    <section id="gallery">
+      <h3 class="section-title">Moments & Memories</h3>
+      <div class="section-divider"><i class="fa-solid fa-camera"></i></div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Blessings & Assistance Section -->
+    <section id="blessings">
+      <h3 class="section-title">Auspicious Blessings</h3>
+      <div class="section-divider"><i class="fa-solid fa-hands-praying"></i></div>
+      
+      <div class="shloka-card">
+        <div style="font-size: 2rem; color: var(--gold-primary); margin-bottom: 8px;">
+          <i class="fa-solid fa-om"></i>
+        </div>
+        
+        <!-- Shloka in Telugu Script -->
+        <div class="shloka-telugu">
+          మంగళం భగవాన్ విష్ణుః మంగళం గరుడధ్వజః ।<br />
+          మంగళం పుండరీకాక్షో మంగళాయ తనో హరిః ॥
+        </div>
+        
+        <p class="shloka-meaning">
+          "May the Supreme Lord bestow auspiciousness, prosperity, and endless joy upon this union."
+        </p>
+
+        <a id="sendWishesBtn" href="#" class="wishes-btn">
+          <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Send Your Warm Wishes
+        </a>
+      </div>
+
+      <!-- With Best Compliments -->
+      <div class="compliments-card">
+        <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--rose-accent); margin-bottom: 6px;">
+          With Best Compliments & Blessings
+        </h4>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">
+          Near & Dear, Family Members, Relatives & Friends
+        </p>
+      </div>
+
+      <!-- Need Assistance Help Desk -->
+      <div class="contact-card">
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--rose-accent); text-transform: uppercase; letter-spacing: 1px;">
+          <i class="fa-solid fa-phone-volume"></i> Need Assistance or Directions?
+        </p>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">
+          Feel free to reach out to our family coordinators:
+        </p>
+        <div class="contact-pill-stack">
+          <a href="tel:+917793957335" class="contact-pill"><i class="fa-solid fa-phone"></i> Call Coordinator</a>
+          <a href="https://api.whatsapp.com/send?phone=917793957335&text=Hello%20Sunil%20and%20Radha" target="_blank" class="contact-pill"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 40px 0 20px; font-size: 0.8rem; color: var(--text-muted);">
+      <p style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--rose-accent);">Sunil & Radha</p>
+      <p style="margin-top: 4px;">#SunilWedsRadha</p>
+    </footer>
+  </main>
+
+  <!-- Bottom Navigation Bar (With Scrollspy) -->
+  <nav class="bottom-nav">
+    <a href="#home" class="nav-item active" data-nav="home"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="#story" class="nav-item" data-nav="story"><i class="fa-solid fa-heart"></i><span>Story</span></a>
+    <a href="#functions" class="nav-item" data-nav="functions"><i class="fa-solid fa-calendar-day"></i><span>Events</span></a>
+    <a href="#venue" class="nav-item" data-nav="venue"><i class="fa-solid fa-map-location-dot"></i><span>Venue</span></a>
+    <a href="#gallery" class="nav-item" data-nav="gallery"><i class="fa-solid fa-images"></i><span>Gallery</span></a>
+    <a href="#blessings" class="nav-item" data-nav="blessings"><i class="fa-solid fa-hands-praying"></i><span>Blessings</span></a>
+  </nav>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img id="lightboxImg" src="" alt="Enlarged photo" />
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT CONFIGURATION & LOGIC
+       ========================================================================== -->
+  <script>
+    const WEDDING_CONFIG = {
+      groomName: "Sunil Kumar",
+      brideName: "Radha Kumari",
+      hashtag: "#SunilWedsRadha",
+      
+      mainWeddingISO: "2026-10-29T22:20:00+05:30",
+      
+      venue: {
+        name: "Pagidi Pratap Reddy Gardens",
+        address: "Gajularamaram, Hyderabad, Telangana 500117",
+        googleMapsUrl: "https://maps.app.goo.gl/aUjYtjovLFgNCZbc7"
+      },
+      
+      functions: [
+        {
+          id: "haldi",
+          title: "Haldi Ceremony",
+          icon: "fa-sun",
+          dateString: "Wednesday, 28 October 2026",
+          timeString: "5:00 PM onwards",
+          venue: "Bride's Residence, Hyderabad",
+          startISO: "2026-10-28T17:00:00+05:30",
+          endISO: "2026-10-28T20:00:00+05:30",
+          mapDirectUrl: "https://maps.app.goo.gl/xaVRJjzVEKV7N2ZW7"
+        },
+        {
+          id: "mehendi",
+          title: "Mehendi & Sangeet",
+          icon: "fa-music",
+          dateString: "Wednesday, 28 October 2026",
+          timeString: "6:30 PM onwards",
+          venue: "Bride's Residence, Hyderabad",
+          startISO: "2026-10-28T18:30:00+05:30",
+          endISO: "2026-10-28T23:30:00+05:30",
+          mapDirectUrl: "https://maps.app.goo.gl/xaVRJjzVEKV7N2ZW7"
+        },
+        {
+          id: "wedding",
+          title: "Wedding Ceremony (Muhurtham)",
+          icon: "fa-ring",
+          dateString: "Thursday, 29 October 2026",
+          timeString: "10:20 PM (Sumuhurtham)",
+          venue: "Pagidi Pratap Reddy Gardens, Hyderabad",
+          startISO: "2026-10-29T22:20:00+05:30",
+          endISO: "2026-10-30T02:00:00+05:30",
+          mapDirectUrl: "https://maps.app.goo.gl/aUjYtjovLFgNCZbc7"
+        },
+        {
+          id: "reception",
+          title: "Reception Dinner",
+          icon: "fa-champagne-glasses",
+          dateString: "Thursday, 29 October 2026",
+          timeString: "7:00 PM onwards",
+          venue: "Pagidi Pratap Reddy Gardens, Hyderabad",
+          startISO: "2026-10-29T19:00:00+05:30",
+          endISO: "2026-10-29T23:00:00+05:30",
+          mapDirectUrl: "https://maps.app.goo.gl/aUjYtjovLFgNCZbc7"
+        }
+      ],
+      
+      /* Synchronized Image Filenames matching your exact uploaded files */
+      galleryPhotos: [
+        { src: "./Couple%20portrait.jpg", caption: "Sunil & Radha ❤️", featured: false },
+        { src: "./Couple%20on%20sofa.jpg", caption: "Cherished Moments", featured: false },
+        { src: "./Cake%20cutting%20moment.jpg", caption: "Cake Cutting with Loved Ones", featured: true },
+        { src: "./Celebration%20with%20family.jpg", caption: "Joyful Celebrations & Blessings", featured: true },
+        { src: "./Family%20portrait.jpg", caption: "With Parents & Elders", featured: true }
+      ]
+    };
+
+    /* 1. OPENING COVER WITH CONFETTI SHOWER */
+    const coverSection = document.getElementById("coverSection");
+    const openInviteBtn = document.getElementById("openInviteBtn");
+    const bgAudio = document.getElementById("bgAudio");
+    const audioToggle = document.getElementById("audioToggle");
+
+    let isAudioPlaying = false;
+
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 75,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#C59B27', '#8E3A49', '#F4E8C1']
+        });
+      }
+    }
+
+    openInviteBtn.addEventListener("click", () => {
+      coverSection.classList.add("unlocked");
+      triggerConfetti();
+      bgAudio.play().then(() => {
+        isAudioPlaying = true;
+        audioToggle.classList.add("active");
+      }).catch(() => {
+        isAudioPlaying = false;
+      });
+    });
+
+    audioToggle.addEventListener("click", () => {
+      if (isAudioPlaying) {
+        bgAudio.pause();
+        audioToggle.classList.remove("active");
+        isAudioPlaying = false;
+      } else {
+        bgAudio.play();
+        audioToggle.classList.add("active");
+        isAudioPlaying = true;
+      }
+    });
+
+    /* 2. REAL-TIME COUNTDOWN TIMER */
+    function initCountdown() {
+      const targetTime = new Date(WEDDING_CONFIG.mainWeddingISO).getTime();
+      const daysEl = document.getElementById("days");
+      const hoursEl = document.getElementById("hours");
+      const minsEl = document.getElementById("minutes");
+      const secsEl = document.getElementById("seconds");
+      const gridEl = document.getElementById("countdownGrid");
+      const celebrationNotice = document.getElementById("celebrationNotice");
+
+      function updateTimer() {
+        const now = new Date().getTime();
+        const difference = targetTime - now;
+
+        if (difference <= 0) {
+          gridEl.style.display = "none";
+          celebrationNotice.style.display = "block";
+          return;
+        }
+
+        const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+        daysEl.textContent = String(d).padStart(2, "0");
+        hoursEl.textContent = String(h).padStart(2, "0");
+        minsEl.textContent = String(m).padStart(2, "0");
+        secsEl.textContent = String(s).padStart(2, "0");
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    }
+
+    /* 3. CALENDAR & EVENT RENDERING */
+    function formatUtcForCalendar(isoString) {
+      const d = new Date(isoString);
+      return d.toISOString().replace(/-|:|\.\d+/g, "");
+    }
+
+    function createGoogleCalendarUrl(ev) {
+      const start = formatUtcForCalendar(ev.startISO);
+      const end = formatUtcForCalendar(ev.endISO);
+      const title = encodeURIComponent(`${ev.title} - ${WEDDING_CONFIG.groomName} & ${WEDDING_CONFIG.brideName}`);
+      const details = encodeURIComponent(`We warmly welcome you to celebrate the ${ev.title} with us.`);
+      const loc = encodeURIComponent(ev.venue);
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${loc}`;
+    }
+
+    function renderEvents() {
+      const container = document.getElementById("eventsContainer");
+      container.innerHTML = "";
+
+      WEDDING_CONFIG.functions.forEach((ev) => {
+        const gcalUrl = createGoogleCalendarUrl(ev);
+        const card = document.createElement("div");
+        card.className = "event-card";
+        card.innerHTML = `
+          <div class="event-header">
+            <div class="event-icon-box"><i class="fa-solid ${ev.icon}"></i></div>
+            <div class="event-title">${ev.title}</div>
+          </div>
+          <div class="event-details">
+            <div><i class="fa-regular fa-calendar" style="color: var(--gold-primary);"></i> <span>${ev.dateString}</span></div>
+            <div><i class="fa-regular fa-clock" style="color: var(--gold-primary);"></i> <span>${ev.timeString}</span></div>
+            <div><i class="fa-solid fa-location-dot" style="color: var(--gold-primary);"></i> <span>${ev.venue}</span></div>
+          </div>
+          <div class="event-actions">
+            <a href="${gcalUrl}" target="_blank" class="btn-cal">
+              <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
+            </a>
+            <a href="${ev.mapDirectUrl}" target="_blank" class="btn-dir">
+              <i class="fa-solid fa-diamond-turn-right"></i> Directions
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    /* 4. GALLERY & LIGHTBOX */
+    function renderGallery() {
+      const galleryGrid = document.getElementById("galleryGrid");
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightboxImg");
+      const lightboxClose = document.getElementById("lightboxClose");
+
+      galleryGrid.innerHTML = "";
+
+      WEDDING_CONFIG.galleryPhotos.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = `gallery-item ${item.featured ? 'featured-wide' : ''}`;
+        div.innerHTML = `
+          <img src="${item.src}" alt="${item.caption}" loading="lazy" />
+          <div class="photo-caption">${item.caption}</div>
+        `;
+        div.addEventListener("click", () => {
+          lightboxImg.src = item.src;
+          lightbox.classList.add("active");
+        });
+        galleryGrid.appendChild(div);
+      });
+
+      lightboxClose.addEventListener("click", () => lightbox.classList.remove("active"));
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) lightbox.classList.remove("active");
+      });
+    }
+
+    /* 5. WHATSAPP & SHARE API */
+    const quickShareBtn = document.getElementById("quickShareBtn");
+    const sendWishesBtn = document.getElementById("sendWishesBtn");
+
+    function shareInvitation() {
+      const shareUrl = window.location.href;
+      const shareText = `You're invited! ❤️\n\nJoin us as ${WEDDING_CONFIG.groomName} & ${WEDDING_CONFIG.brideName} begin their forever.\n\nWedding: 29 October 2026\nHyderabad\n\nView the interactive invitation:\n${shareUrl}`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: `${WEDDING_CONFIG.groomName} & ${WEDDING_CONFIG.brideName} Wedding`,
+          text: shareText,
+          url: shareUrl
+        }).catch(() => {});
+      } else {
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+        window.open(waUrl, "_blank");
+      }
+    }
+
+    function setupWishesButton() {
+      const blessingText = `Hearty Congratulations ${WEDDING_CONFIG.groomName} & ${WEDDING_CONFIG.brideName}! 💐✨\nWishing you both a wonderful journey together filled with love, happiness, and prosperity! ❤️`;
+      sendWishesBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(blessingText)}`;
+      sendWishesBtn.target = "_blank";
+    }
+
+    quickShareBtn.addEventListener("click", shareInvitation);
+
+    /* 6. SCROLLSPY */
+    function initScrollspy() {
+      const sections = document.querySelectorAll("section[id]");
+      const navItems = document.querySelectorAll(".bottom-nav .nav-item");
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const currentId = entry.target.getAttribute("id");
+            navItems.forEach(item => {
+              item.classList.toggle("active", item.getAttribute("data-nav") === currentId);
+            });
+          }
+        });
+      }, { threshold: 0.35 });
+
+      sections.forEach(sec => observer.observe(sec));
+    }
+
+    /* 7. FLOATING PETALS CANVAS */
+    function initPetals() {
+      const canvas = document.getElementById("petalCanvas");
+      const ctx = canvas.getContext("2d");
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener("resize", () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const petals = Array.from({ length: 18 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height - height,
+        r: Math.random() * 5 + 3,
+        dx: Math.random() * 1.5 - 0.75,
+        dy: Math.random() * 1.2 + 0.8,
+        tilt: Math.random() * 10,
+        tiltAngle: Math.random() * 0.1,
+        color: Math.random() > 0.5 ? "rgba(224, 130, 145, 0.4)" : "rgba(238, 206, 126, 0.4)"
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        petals.forEach((p) => {
+          ctx.beginPath();
+          ctx.ellipse(p.x, p.y, p.r, p.r * 1.4, p.tilt, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+
+          p.y += p.dy;
+          p.x += p.dx;
+          p.tilt += p.tiltAngle;
+
+          if (p.y > height) {
+            p.y = -10;
+            p.x = Math.random() * width;
+          }
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    /* INITIALIZATION */
+    document.addEventListener("DOMContentLoaded", () => {
+      initCountdown();
+      renderEvents();
+      renderGallery();
+      setupWishesButton();
+      initScrollspy();
+      initPetals();
+    });
+  </script>
+</body>
+</html>
